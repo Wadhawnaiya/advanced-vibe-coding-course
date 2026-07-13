@@ -23,6 +23,15 @@ MAIN_SEQUENCE = [
     (WORKBOOK, "Module 4: Interactive Frontend — Pages That Do Things", "Module 5: Think Before You Build — PRD & Scope"),
     (WORKBOOK, "Module 5: Think Before You Build — PRD & Scope", "Module 6: Data & Backend Basics"),
     (STUDY_BOOK, "Chapter 9 — Python Study Guide", "Chapter 10 — Git Study Guide"),
+    (WORKBOOK, "Module 6: Data & Backend Basics", "Module 7: Full-Stack MVP with Claude Code"),
+    (STUDY_BOOK, "Chapter 12 — Full-Stack Build Path (Your Labs)", "Chapter 13 — Deploy Study Guide"),
+    (WORKBOOK, "Module 7: Full-Stack MVP with Claude Code", "Module 8: Users, Login & Polish"),
+    (WORKBOOK, "Module 8: Users, Login & Polish", "Module 9: Git & GitHub — Save Points"),
+    (STUDY_BOOK, "Chapter 10 — Git Study Guide", "Chapter 12 — Full-Stack Build Path (Your Labs)"),
+    (WORKBOOK, "Module 9: Git & GitHub — Save Points", "Module 10: Deploy, Test & Demo Day"),
+    (STUDY_BOOK, "Chapter 13 — Deploy Study Guide", "Chapter 14 — Quick Reference Cards"),
+    (WORKBOOK, "Module 10: Deploy, Test & Demo Day", "Tools You Will Use Every Day"),
+    (STUDY_BOOK, "Chapter 14 — Quick Reference Cards", None),
 ]
 
 
@@ -32,7 +41,15 @@ def build_main_sequence(doc, composer):
 
 
 def add_tail_sections(doc, composer, brand):
-    pass  # implemented in Task 11
+    for start, end in [
+        ("Tools You Will Use Every Day", "Prompt Pocket Library"),
+        ("Prompt Pocket Library", "Beginner Glossary"),
+        ("Beginner Glossary", "Capstone Tracker"),
+        ("Capstone Tracker", "Homework Log"),
+        ("Homework Log", "You Can Build Software"),
+        ("You Can Build Software", None),
+    ]:
+        composer.append(load_excerpt(WORKBOOK, start, end))
 
 
 def main():
