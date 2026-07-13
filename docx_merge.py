@@ -195,7 +195,7 @@ def render_cover(doc, brand, light=False):
         t = doc.add_paragraph(); t.alignment = WD_ALIGN_PARAGRAPH.CENTER
         contact = brand["contact"]
         _set_run(
-            t.add_run(f"{contact['phone']}  ·  {contact['email']}  ·  {contact['linkedin']}"),
+            t.add_run(f"{contact['phone']}  ·  {contact['email']}  ·  {contact['linkedin']}  ·  {contact['website']}"),
             size=9, color=palette["muted"],
         )
     doc.add_paragraph()
@@ -238,6 +238,7 @@ def render_about_page(doc, brand, light=False):
             ("Phone", contact["phone"]),
             ("Email", contact["email"]),
             ("LinkedIn", contact["linkedin"]),
+            ("Website", contact["website"]),
             ("Location", contact["location"]),
         ]:
             b = doc.add_paragraph()

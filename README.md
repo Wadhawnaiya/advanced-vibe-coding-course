@@ -1,6 +1,6 @@
 # Vibe Coding with Claude Code
 
-A course by CA Shailesh S Wadhawaniya — A SHAILESH-AI Program — AI Training & Consulting
+A course by Chartered Accountant Shailesh S Wadhawaniya — A SHAILESH-AI Program — AI Training & Consulting
 
 ## The 3 deliverables
 
@@ -22,4 +22,4 @@ All names, credentials, contact details, and colors live in `brand.json`. Change
 
 ## License
 
-Licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE) — free to use, copy, modify, and share for any noncommercial purpose. Commercial use requires separate written permission from CA Shailesh S Wadhawaniya.
+Licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE) — free to use, copy, modify, and share for any noncommercial purpose. Commercial use requires separate written permission from Chartered Accountant Shailesh S Wadhawaniya.
