@@ -1096,10 +1096,7 @@ async function main() {
     });
   }
 
-  const out = path.join(
-    "/home/shailesh/Downloads/Training/vibe-coding",
-    "Vibe_Coding_Module_Slides.pptx"
-  );
+  const out = path.join(__dirname, "Vibe_Coding_Module_Slides.pptx");
   await pres.writeFile({ fileName: out });
   console.log("Wrote", out);
 }
