@@ -80,7 +80,17 @@ def add_part_c(doc, composer, brand):
 
 
 def add_part_d(doc, composer, brand):
-    pass  # implemented in Task 9
+    from docx_merge import _color, demote_part_headings
+    h = doc.add_heading("Part D — Facilitation Playbook & Resources", level=1)
+    for run in h.runs:
+        run.font.color.rgb = _color(brand["palette"]["primary"])
+
+    workshop_appendix = load_excerpt(DEEP_WORKSHOPS, "Appendix — Facilitator Notes for Workshops")
+    composer.append(workshop_appendix)
+
+    resources = load_excerpt(FULL_COURSE_GUIDE, "Part C — Instructor Facilitation Playbook")
+    demote_part_headings(resources)
+    composer.append(resources)
 
 
 def main():
