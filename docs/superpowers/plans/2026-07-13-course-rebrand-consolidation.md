@@ -1077,9 +1077,8 @@ git commit -m "feat: complete Student Book remaining chapters, tail sections, an
 ### Task 12: Rebrand the slide deck
 
 **Files:**
-- Create: `generate-slides.js` (from `generate-slides-v2.js`, edited)
+- Create: `generate-slides.js` (from `generate-slides-v2.js`, edited) — the root no longer has an old `generate-slides.js`; it was archived as `archive/legacy-scripts/generate-slides-v1.js` in a follow-up fix after Task 2 (Task 2's own git mv list missed it)
 - Move: `generate-slides-v2.js` → `archive/legacy-scripts/` (after the new file is created and works)
-- Move: `archive/legacy-scripts/generate-slides.js` (original v1, already dead) stays where Task 2 put it
 
 **Interfaces:**
 - Consumes: `brand.json` (Task 3)
