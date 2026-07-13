@@ -28,7 +28,14 @@ def add_part_a(doc, composer, brand):
 
 
 def add_part_b(doc, composer, brand):
-    pass  # implemented in Task 7
+    h = doc.add_heading("Part B — Technical Encyclopedia", level=1)
+    for run in h.runs:
+        from docx_merge import _color
+        run.font.color.rgb = _color(brand["palette"]["primary"])
+    composer.append(load_excerpt(
+        MASTER_GUIDE,
+        "Part 1 — Mindset & What You Are Actually Learning",
+    ))
 
 
 def add_part_c(doc, composer, brand):
