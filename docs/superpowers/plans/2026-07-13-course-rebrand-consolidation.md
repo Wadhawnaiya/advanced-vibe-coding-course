@@ -945,13 +945,13 @@ assert_contains(OUT, [
 ])
 assert 'wadhawaniya@gmail.com' not in open(OUT, 'rb').read().decode('latin1'), 'student book must not leak personal contact info'
 h = heading_list(OUT)
+assert 'Chapter 10 — Git Study Guide' not in h, 'Chapter 10 is the exclusive end-boundary of the last MAIN_SEQUENCE entry and must not appear until Task 11 adds the entry that starts there'
 i_ch9 = h.index('Chapter 9 — Python Study Guide')
-i_ch10 = h.index('Chapter 10 — Git Study Guide')
-assert i_ch9 < i_ch10
+assert i_ch9 == len(h) - 5
 print('ok, headings so far:', len(h))
 "
 ```
-Expected: `ok, headings so far: <some number>` (note: the personal-info check on raw bytes is a coarse guard, not a full text-decoding check — Step 3 of Task 11 does the authoritative `all_text` check once the document is complete)
+Expected: `ok, headings so far: <some number>` (note: the personal-info check on raw bytes is a coarse guard, not a full text-decoding check — Step 3 of Task 11 does the authoritative `all_text` check once the document is complete. Also note: `load_excerpt`'s end boundary is exclusive, so "Chapter 10 — Git Study Guide" — the last entry's end heading — is correctly absent here; it only appears once Task 11's `MAIN_SEQUENCE` extension adds the entry that starts there.)
 
 - [ ] **Step 4: Commit**
 
