@@ -19,3 +19,7 @@ All names, credentials, contact details, and colors live in `brand.json`. Change
 - `source-material/` — the original generated documents the two `.docx` builders excerpt content from. Required for rebuilding; do not delete.
 - `archive/legacy-scripts/` — superseded generator scripts and outputs, kept for history only.
 - `docx_merge.py` / `verify_docx.py` — shared Python helpers used by the two `.docx` builders.
+
+## License
+
+Licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE) — free to use, copy, modify, and share for any noncommercial purpose. Commercial use requires separate written permission from CA Shailesh S Wadhawaniya.
