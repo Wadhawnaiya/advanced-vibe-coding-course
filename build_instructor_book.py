@@ -38,8 +38,45 @@ def add_part_b(doc, composer, brand):
     ))
 
 
+PART_C_SEQUENCE = [
+    (FULL_COURSE_GUIDE, "Part B — Pre-Course Onboarding (Week 0)", "Module 1 — Digital Ground Zero: Computer, Files, Terminal"),
+    (FULL_COURSE_GUIDE, "Module 1 — Digital Ground Zero: Computer, Files, Terminal", "Module 2 — The Vibe Coding Craft: Directing Claude Code"),
+    (DEEP_WORKSHOPS, "Workshop 1 — Install Claude Code and Understand Every Step", "Workshop 2 — Slash Commands Lab (Do / Observe / Explain)"),
+    (FULL_COURSE_GUIDE, "Module 2 — The Vibe Coding Craft: Directing Claude Code", "Module 3 — How the Internet & Web Apps Work (No Syntax Torture)"),
+    (DEEP_WORKSHOPS, "Workshop 2 — Slash Commands Lab (Do / Observe / Explain)", "Workshop 3 — HTML Deep Build (Portfolio Page)"),
+    (FULL_COURSE_GUIDE, "Module 3 — How the Internet & Web Apps Work (No Syntax Torture)", "Module 4 — Interactive Frontend: Making Pages Do Things"),
+    (DEEP_WORKSHOPS, "Workshop 3 — HTML Deep Build (Portfolio Page)", "Workshop 4 — CSS Deep Build (Make It Professional)"),
+    (FULL_COURSE_GUIDE, "Module 4 — Interactive Frontend: Making Pages Do Things", "Module 5 — Think Before You Build: PRD, Scope, Wireframes"),
+    (DEEP_WORKSHOPS, "Workshop 4 — CSS Deep Build (Make It Professional)", "Workshop 5 — JavaScript Deep Build (Quiz App)"),
+    (DEEP_WORKSHOPS, "Workshop 5 — JavaScript Deep Build (Quiz App)", "Workshop 6 — Python Backend Mini API"),
+    (FULL_COURSE_GUIDE, "Module 5 — Think Before You Build: PRD, Scope, Wireframes", "Module 6 — Data & Backend Basics (Still Human Language)"),
+    (FULL_COURSE_GUIDE, "Module 6 — Data & Backend Basics (Still Human Language)", "Module 7 — Full-Stack MVP with Claude Code"),
+    (DEEP_WORKSHOPS, "Workshop 6 — Python Backend Mini API", "Workshop 7 — Persistence & CRUD Properly"),
+    (DEEP_WORKSHOPS, "Workshop 7 — Persistence & CRUD Properly", "Workshop 8 — Git From Zero to Daily Habit"),
+    (FULL_COURSE_GUIDE, "Module 7 — Full-Stack MVP with Claude Code", "Module 8 — Users, Auth, and App Polish"),
+    (DEEP_WORKSHOPS, "Workshop 10 — Full-Stack Vertical Slice", "Workshop 11 — Auth & Ownership"),
+    (FULL_COURSE_GUIDE, "Module 8 — Users, Auth, and App Polish", "Module 9 — Git & GitHub: Save Points for Your Work"),
+    (DEEP_WORKSHOPS, "Workshop 11 — Auth & Ownership", "Workshop 12 — Deploy & Public Demo"),
+    (FULL_COURSE_GUIDE, "Module 9 — Git & GitHub: Save Points for Your Work", "Module 10 — Deploy, Test, and Demo Day"),
+    (DEEP_WORKSHOPS, "Workshop 8 — Git From Zero to Daily Habit", "Workshop 9 — GitHub Complete Hands-On"),
+    (DEEP_WORKSHOPS, "Workshop 9 — GitHub Complete Hands-On", "Workshop 10 — Full-Stack Vertical Slice"),
+    (FULL_COURSE_GUIDE, "Module 10 — Deploy, Test, and Demo Day", "Module 11 (Optional Advanced) — Skills, MCP, and Power Features"),
+    (DEEP_WORKSHOPS, "Workshop 12 — Deploy & Public Demo", "Workshop 13 — Capstone Integration Week"),
+    (FULL_COURSE_GUIDE, "Module 11 (Optional Advanced) — Skills, MCP, and Power Features", "Module 12 (Optional) — From Vibe Coding to Responsible Building"),
+    (FULL_COURSE_GUIDE, "Module 12 (Optional) — From Vibe Coding to Responsible Building", "Part C — Instructor Facilitation Playbook"),
+    (DEEP_WORKSHOPS, "Workshop 13 — Capstone Integration Week", "Appendix — Facilitator Notes for Workshops"),
+]
+
+
 def add_part_c(doc, composer, brand):
-    pass  # implemented in Task 8
+    from docx_merge import _color, demote_part_headings
+    h = doc.add_heading("Part C — Module-by-Module Teaching Flow", level=1)
+    for run in h.runs:
+        run.font.color.rgb = _color(brand["palette"]["primary"])
+    for path, start, end in PART_C_SEQUENCE:
+        excerpt = load_excerpt(path, start, end)
+        demote_part_headings(excerpt)  # only affects the Week-0 "Part B — ..." heading; no-op on Module/Workshop headings
+        composer.append(excerpt)
 
 
 def add_part_d(doc, composer, brand):
