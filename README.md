@@ -1,6 +1,6 @@
 # Vibe Coding with Claude Code
 
-A course by CA Shailesh S Wadhawaniya — A StrideX Institute Program, in partnership with Wadhawaniya & Co.
+A course by CA Shailesh S Wadhawaniya — A SHAILESH-AI Program — AI Training & Consulting
 
 ## The 3 deliverables
 
