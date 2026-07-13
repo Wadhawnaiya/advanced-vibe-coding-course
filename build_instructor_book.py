@@ -2,10 +2,18 @@
 """Assembles Vibe_Coding_Instructor_Book.docx from the source-material docs."""
 import os
 
-from docx import Document
 from docxcompose.composer import Composer
 
-from docx_merge import load_brand, new_base_document, render_cover, render_about_page, load_excerpt, apply_header_footer
+from docx_merge import (
+    load_brand,
+    new_base_document,
+    render_cover,
+    render_about_page,
+    load_excerpt,
+    strip_closing_trailer,
+    recolor_headings,
+    apply_header_footer,
+)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SOURCE_DIR = os.path.join(BASE_DIR, "source-material")
@@ -32,10 +40,11 @@ def add_part_b(doc, composer, brand):
     for run in h.runs:
         from docx_merge import _color
         run.font.color.rgb = _color(brand["palette"]["primary"])
-    composer.append(load_excerpt(
+    excerpt = strip_closing_trailer(load_excerpt(
         MASTER_GUIDE,
         "Part 1 — Mindset & What You Are Actually Learning",
     ))
+    composer.append(excerpt)
 
 
 PART_C_SEQUENCE = [
@@ -85,10 +94,14 @@ def add_part_d(doc, composer, brand):
     for run in h.runs:
         run.font.color.rgb = _color(brand["palette"]["primary"])
 
-    workshop_appendix = load_excerpt(DEEP_WORKSHOPS, "Appendix — Facilitator Notes for Workshops")
+    workshop_appendix = strip_closing_trailer(
+        load_excerpt(DEEP_WORKSHOPS, "Appendix — Facilitator Notes for Workshops")
+    )
     composer.append(workshop_appendix)
 
-    resources = load_excerpt(FULL_COURSE_GUIDE, "Part C — Instructor Facilitation Playbook")
+    resources = strip_closing_trailer(
+        load_excerpt(FULL_COURSE_GUIDE, "Part C — Instructor Facilitation Playbook")
+    )
     demote_part_headings(resources)
     composer.append(resources)
 
@@ -105,6 +118,7 @@ def main():
     add_part_c(doc, composer, brand)
     add_part_d(doc, composer, brand)
 
+    recolor_headings(doc, brand)
     apply_header_footer(doc, brand, "Instructor Book")
     doc.save(OUT)
     print("Wrote", OUT)

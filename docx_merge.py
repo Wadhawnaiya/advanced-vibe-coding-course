@@ -13,6 +13,11 @@ BRAND_PATH = os.path.join(BASE_DIR, "brand.json")
 
 PART_LETTER_RE = re.compile(r"^Part [A-Z] — (.+)$")
 
+# Matches a source document's own closing/sign-off marker, e.g.
+# "— End of Master Teaching Guide (Edition 2.0) —", "End of Course Guide — ..."
+# (the leading em dash is not always present), or "Use with: <old filenames>".
+_CLOSING_TRAILER_RE = re.compile(r"^(—\s*)?End of\b|^Use with:", re.IGNORECASE)
+
 
 def load_brand():
     with open(BRAND_PATH, encoding="utf-8") as f:
@@ -60,6 +65,42 @@ def load_excerpt(path, start_heading, end_heading=None):
     return doc
 
 
+def strip_closing_trailer(doc, tail_window=15):
+    """Remove a source document's own closing/sign-off paragraphs (e.g.
+    '— End of X —', 'End of X — ...', 'Use with: <old filenames>', and any
+    stray sign-off line that immediately follows one) from the tail of
+    `doc`'s body. Used on excerpts loaded with `end_heading=None`, which run
+    to the true end of their source document and therefore also pull in
+    that source's own trailer.
+
+    A naive "scan backward from the end, stop at the first non-matching
+    paragraph" approach is not reliable here: some sources append a short
+    sign-off *after* their closing marker (e.g. a "Primary references: ..."
+    or tagline paragraph) that doesn't itself match the trailer pattern, so
+    stopping at the first non-match would miss the marker entirely. Instead
+    this scans the last `tail_window` paragraphs for the *earliest*
+    paragraph matching the trailer pattern and removes it and everything
+    after it. If no match is found in that window, nothing is removed.
+    """
+    body = doc.element.body
+    children = list(body)
+    sectpr = children[-1] if children and children[-1].tag.endswith("}sectPr") else None
+    content = children[:-1] if sectpr is not None else children
+
+    window_start = max(0, len(content) - tail_window)
+    cut_at = None
+    for i in range(window_start, len(content)):
+        text = "".join(content[i].itertext()).strip()
+        if text and _CLOSING_TRAILER_RE.match(text):
+            cut_at = i
+            break
+    if cut_at is None:
+        return doc
+    for el in content[cut_at:]:
+        body.remove(el)
+    return doc
+
+
 def _style_by_name(doc, name):
     """Look up a style by its resolved UI name.
 
@@ -91,6 +132,33 @@ def demote_part_headings(doc):
         for i, run in enumerate(para.runs):
             run.text = new_text if i == 0 else ""
         para.style = _style_by_name(doc, "Heading 2")
+    return doc
+
+
+def recolor_headings(doc, brand):
+    """Force every Heading 1/2/3 paragraph's run colors to the brand palette,
+    overriding whatever color the source document originally used.
+
+    Excerpts merged in via docxcompose preserve each source's original
+    run-level formatting verbatim, including any heading colors that predate
+    the brand's unified green palette (e.g. the Full Course Guide's blue
+    1B4F72/2874A6). This is a single whole-document pass over the final
+    composed `doc`, run once at the end of assembly, so it recolors every
+    heading regardless of which source excerpt it came from."""
+    palette = brand["palette"]
+    level_colors = {
+        "Heading 1": palette["primary"],
+        "Heading 2": palette["accent"],
+        "Heading 3": palette["dark"],
+    }
+    for para in doc.paragraphs:
+        if para.style is None:
+            continue
+        color_hex = level_colors.get(para.style.name)
+        if color_hex is None:
+            continue
+        for run in para.runs:
+            run.font.color.rgb = _color(color_hex)
     return doc
 
 

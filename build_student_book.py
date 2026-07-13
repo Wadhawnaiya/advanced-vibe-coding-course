@@ -4,7 +4,16 @@ import os
 
 from docxcompose.composer import Composer
 
-from docx_merge import load_brand, new_base_document, render_cover, render_about_page, load_excerpt, apply_header_footer, _color
+from docx_merge import (
+    load_brand,
+    new_base_document,
+    render_cover,
+    render_about_page,
+    load_excerpt,
+    strip_closing_trailer,
+    recolor_headings,
+    apply_header_footer,
+)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SOURCE_DIR = os.path.join(BASE_DIR, "source-material")
@@ -37,7 +46,13 @@ MAIN_SEQUENCE = [
 
 def build_main_sequence(doc, composer):
     for path, start, end in MAIN_SEQUENCE:
-        composer.append(load_excerpt(path, start, end))
+        excerpt = load_excerpt(path, start, end)
+        if end is None:
+            # Runs to the true end of its source document, so it also pulls
+            # in that source's own closing trailer (e.g. "— End of Student
+            # Study Book —") — strip it before merging.
+            strip_closing_trailer(excerpt)
+        composer.append(excerpt)
 
 
 def add_tail_sections(doc, composer, brand):
@@ -49,7 +64,12 @@ def add_tail_sections(doc, composer, brand):
         ("Homework Log", "You Can Build Software"),
         ("You Can Build Software", None),
     ]:
-        composer.append(load_excerpt(WORKBOOK, start, end))
+        excerpt = load_excerpt(WORKBOOK, start, end)
+        if end is None:
+            # Runs to the true end of the Workbook, pulling in its own
+            # "— End of Student Workbook —" closing trailer — strip it.
+            strip_closing_trailer(excerpt)
+        composer.append(excerpt)
 
 
 def main():
@@ -62,6 +82,7 @@ def main():
     build_main_sequence(doc, composer)
     add_tail_sections(doc, composer, brand)
 
+    recolor_headings(doc, brand)
     apply_header_footer(doc, brand, "Student Book")
     doc.save(OUT)
     print("Wrote", OUT)
