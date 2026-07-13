@@ -1,6 +1,6 @@
 /**
- * Vibe Coding with Claude Code — Edition 2 Slides
- * Deep teaching deck aligned with Master Guide / Study Book / Workshops
+ * Vibe Coding with Claude Code — Module Slides
+ * Classroom projection deck; companion to the Instructor Book and Student Book.
  */
 const pptxgen = require("pptxgenjs");
 const path = require("path");
@@ -132,13 +132,17 @@ async function main() {
     const s = pres.addSlide();
     s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 5.625, fill: { color: P.dark } });
     s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 4.95, w: 10, h: 0.675, fill: { color: P.mid } });
-    s.addText("EDITION 2  ·  EXPLANATION-FIRST", {
+    s.addText("MODULE SLIDES  ·  EXPLANATION-FIRST", {
       x: 0.55, y: 1.35, w: 9, h: 0.35,
       fontSize: 13, bold: true, color: P.mint, fontFace: "Arial", margin: 0, charSpacing: 2,
     });
     s.addText("Vibe Coding with\nClaude Code", {
       x: 0.55, y: 1.85, w: 9, h: 1.6,
       fontSize: 38, bold: true, color: P.white, fontFace: "Arial", margin: 0,
+    });
+    s.addText(`Version ${brand.course.version} · ${brand.course.date}`, {
+      x: 0.55, y: 3.5, w: 9, h: 0.3,
+      fontSize: 11, color: P.muted, fontFace: "Arial", margin: 0,
     });
     s.addText("Features · Slash commands · HTML/CSS/JS/Python · Git · GitHub · Full-stack", {
       x: 0.55, y: 5.12, w: 9, h: 0.35,
@@ -1060,10 +1064,9 @@ async function main() {
   {
     const s = content("Companion documents");
     const docs = [
-      ["Master Teaching Guide", "Full explanations Parts 1–28"],
-      ["Student Study Book", "Chapters + practice answers"],
-      ["Volume 2 Workshops", "13 deep hands-on labs"],
-      ["These slides (Ed. 2)", "Classroom projection deck"],
+      ["Instructor Book", "Full teaching flow, technical encyclopedia + hands-on labs, facilitation playbook"],
+      ["Student Book", "Chapters, labs, prompts, homework, and trackers in one place"],
+      ["Module Slides", `This deck — ${brand.course.title} classroom projection`],
     ];
     docs.forEach((d, i) => {
       const y = 1.05 + i * 0.9;
@@ -1091,7 +1094,7 @@ async function main() {
     s.addText("Idea → PRD → Claude Code → app → GitHub → public URL → demo.", {
       x: 0.65, y: 2.9, w: 8.7, h: 0.7, fontSize: 16, color: P.mint, fontFace: "Arial", margin: 0,
     });
-    s.addText("Edition 2 slides — matched to the deep teaching guides.", {
+    s.addText("Matched to the Instructor Book and Student Book.", {
       x: 0.65, y: 4.1, w: 8.7, h: 0.4, fontSize: 14, color: P.cream, fontFace: "Arial", margin: 0,
     });
   }
